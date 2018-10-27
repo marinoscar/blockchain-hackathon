@@ -1,5 +1,5 @@
 {
-  "name": "API Blockchain Hackathon",
+  "name": "blockchain-hackathon",
   "version": "1.0.0",
   "description": "Express API with Convector Framework.",
   "main": "index.js",
