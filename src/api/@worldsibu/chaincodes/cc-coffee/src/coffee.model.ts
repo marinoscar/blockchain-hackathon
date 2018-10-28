@@ -70,4 +70,7 @@ export class Coffee extends ConvectorModel<Coffee> {
 
   @Validate(yup.array(yup.object()))
   public components: Array<Coffee>;
+
+  @Validate(yup.number())
+  public locationId: number;
 }

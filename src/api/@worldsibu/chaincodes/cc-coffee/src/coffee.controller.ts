@@ -159,4 +159,26 @@ export class CoffeeController extends ConvectorController {
 
     await coffee.save();
   }
+
+  @Invokable()
+  public async getHistory(
+    @Param(yup.string())
+    id: string
+  ) {
+    const coffee = await Coffee.getOne(id);
+    return await coffee.history();
+  }
+
+  @Invokable()
+  public async changeLocation(
+    @Param(yup.string())
+    id: string,
+    @Param(yup.number())
+    locationId: number
+  ) {
+    const coffee = await Coffee.getOne(id);
+    // requires validation of current location owner
+    coffee.locationId = locationId;
+    await coffee.save();
+  }
 }

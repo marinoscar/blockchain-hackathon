@@ -69,12 +69,13 @@ export class CoffeeControllerClient extends ConvectorController {
         
   }
 
+  
   public async join(
     
     id: string,
     
     components: Array<Coffee>,
-        
+    
     modifiedDate: number
   ) {
 
@@ -82,16 +83,39 @@ export class CoffeeControllerClient extends ConvectorController {
         
   }
 
+  
   public async split(
     
     id: string,
     
     splitIds: Array<string>,
-        
+    
     modifiedDate: number
   ) {
 
           return await this.adapter.invoke(this.name, 'split', this.user, id, splitIds, modifiedDate);
+        
+  }
+
+  
+  public async getHistory(
+    
+    id: string
+  ) {
+
+          return await this.adapter.invoke(this.name, 'getHistory', this.user, id);
+        
+  }
+
+  
+  public async changeLocation(
+    
+    id: string,
+    
+    locationId: number
+  ) {
+
+          return await this.adapter.invoke(this.name, 'changeLocation', this.user, id, locationId);
         
   }
 }
