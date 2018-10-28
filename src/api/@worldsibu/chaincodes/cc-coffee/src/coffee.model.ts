@@ -33,12 +33,10 @@ export class Coffee extends ConvectorModel<Coffee> {
   public variety: string;
 
   @ReadOnly()
-  @Required()
   @Validate(yup.string())
   public quality: string;
 
   @ReadOnly()
-  @Required()
   @Validate(yup.string())
   public classification: string;
 

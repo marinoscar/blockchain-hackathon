@@ -68,7 +68,7 @@ const coffeeFabricBuilder = new FabricAdapterBuilder(
 const usersController = new UsersController(userStore);
 const locationsController = new LocationsController(locationStore,
   locationFabricBuilder);
-const coffeeController = new LocationsController(coffeeStore,
+const coffeeController = new AssetsController(coffeeStore,
   coffeeFabricBuilder);
 
 const app: express.Application = express();
