@@ -5,7 +5,7 @@ import {
   Participant,
   ParticipantControllerClient,
 } from '@worldsibu/convector-example-dsc-cc-participant/dist/client';
-import {UserStore} from './store/user';
+import {UserStore} from './store';
 import {FabricAdapterBuilder} from './utils/adapter-builder';
 
 export async function initUsers(
@@ -14,7 +14,7 @@ export async function initUsers(
     organization: string,
     fabricBuilder: FabricAdapterBuilder,
 ) {
-  const existingUsers = await userStore.List();
+  const existingUsers = await userStore.list();
   const promises = users.map((user) => {
     const adapter = fabricBuilder.build(user);
     return createParticipant(adapter, user, organization, existingUsers);

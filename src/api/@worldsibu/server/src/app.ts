@@ -8,11 +8,13 @@ import * as NodeCouchDb from 'node-couchdb';
 import {initUsers} from './init';
 import {DrugCtrl} from './controllers';
 import {UsersController} from './controllers/users';
-import {UserStore} from './store/user';
+import {CouchDbStore, UserStore} from './store';
 import {FabricAdapterBuilder} from './utils/adapter-builder';
+import {LocationsController} from './controllers/locations';
 
 const channel = process.env.CHANNEL;
 const userChainCode = 'participant';
+const locationChainCode = 'location';
 
 const rootDir = path.resolve(__dirname, '..');
 dotenv.config();
@@ -31,10 +33,9 @@ const couchDb = new NodeCouchDb({
   port: parseInt(process.env.COUCHDB_PORT),
 });
 
-// User Store
-const userStore = new UserStore(couchDb, `${channel}_${userChainCode}`, users);
-
-// Fabric Adapter Builder
+// User Store and Fabric Adapter Builder
+const userDbName = `${channel}_${userChainCode}`;
+const userStore = new UserStore(couchDb, userDbName, users);
 const userFabricBuilder = new FabricAdapterBuilder(
     path.resolve(rootDir, process.env.KEYSTORE),
     path.resolve(rootDir, process.env.NETWORKPROFILE),
@@ -42,14 +43,26 @@ const userFabricBuilder = new FabricAdapterBuilder(
     userChainCode,
 );
 
+// Location Store and Fabric Adapter Builder
+const locationDbName = `${channel}_${locationChainCode}`;
+const locationStore = new CouchDbStore(couchDb, locationDbName);
+const locationFabricBuilder = new FabricAdapterBuilder(
+    path.resolve(rootDir, process.env.KEYSTORE),
+    path.resolve(rootDir, process.env.NETWORKPROFILE),
+    channel,
+    locationChainCode,
+);
+
 // Controllers
 const usersController = new UsersController(userStore);
+const locationsController = new LocationsController(couchDb, locationFabricBuilder);
 
 const app: express.Application = express();
 app.use(bodyParser.urlencoded({extended: true, limit: '40mb'}));
 app.use(bodyParser.json({limit: '40mb'}));
 
 app.use('/users', usersController.router());
+app.use('/locations', locationsController.router());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

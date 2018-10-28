@@ -6,6 +6,10 @@ export abstract class Controller {
 
   public abstract router(): Router;
 
+  protected getUserId(): string {
+    return 'user1';
+  }
+
   protected routerMethod(handler: RequestHandler): RequestHandler {
     handler = handler.bind(this);
     return async (req: Request, res: Response) => {

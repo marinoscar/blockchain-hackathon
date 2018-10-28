@@ -28,17 +28,18 @@
     "userContext": "node -e 'let selfEnroll = require(\"./dist/selfGenContext.js\"); selfEnroll.SelfEnroll.getClient()'"
   },
   "dependencies": {
+    "@worldsibu/cc-coffee": "1.0.0",
+    "@worldsibu/cc-location": "1.0.0",
     "@worldsibu/convector-adapter-fabric": "1.2.0",
     "@worldsibu/convector-example-dsc-cc-drug": "1.0.0",
     "@worldsibu/convector-example-dsc-cc-participant": "1.0.0",
-    "@worldsibu/cc-coffee": "1.0.0",
-    "@worldsibu/cc-location": "1.0.0",
     "@worldsibu/convector-storage-couchdb": "1.2.0",
     "body-parser": "^1.18.3",
     "config": "^1.30.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "node-couchdb": "^1.3.0",
+    "uuid": "^3.3.2",
     "x509": "^0.3.3"
   },
   "devDependencies": {

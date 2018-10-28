@@ -1,22 +1,16 @@
-import {promise} from 'selenium-webdriver';
-import map = promise.map;
-
-const userType = 'io.worldsibu.examples.participant';
+import {CouchDbStore} from './couchdb';
 
 export type UserMappingData = {
   fabricId: string,
   name: string,
 }
 
-export class UserStore {
+export class UserStore extends CouchDbStore {
 
-  private readonly couchDb;
-  private readonly database: string;
   private readonly userMapping: Map<string, UserMappingData>;
 
-  constructor(couchDb, database: string, userMapping) {
-    this.couchDb = couchDb;
-    this.database = database;
+  constructor(couchDb: any, database: string, userMapping) {
+    super(couchDb, database);
     const fabricMapping = new Map();
     Array.from(userMapping.keys()).map((key) => {
       const user = userMapping.get(key);
@@ -25,23 +19,14 @@ export class UserStore {
     this.userMapping = fabricMapping;
   }
 
-  public List(): Promise<any[]> {
-    const selector = {
-      selector: {
-        type: userType,
-      },
-    };
+  public list(): Promise<any[]> {
     const self = this;
-    return new Promise((resolve, reject) => {
-      self.couchDb.mango(self.database, selector, {}).then((result) => {
-        const users = result.data.docs.map(user => {
-          const x = Object.assign(user, {
-            name: self.userMapping.get(user.user)
-          });
-          return x;
+    return super.list().then((users) => {
+      return users.map(user => {
+        return Object.assign(user, {
+          name: self.userMapping.get(user.user),
         });
-        resolve(users);
-      }, reject);
+      });
     });
   }
 }
