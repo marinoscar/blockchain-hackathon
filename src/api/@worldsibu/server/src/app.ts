@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json({limit: '40mb'}));
 
-app.use('/other', usersController.Router());
+app.use('/users', usersController.Router());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

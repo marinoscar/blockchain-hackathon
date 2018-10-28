@@ -27,7 +27,7 @@ export class UsersController {
 
   public Router(): Router {
     const router = Router();
-    router.get('/users', RouterMethod(this.ListUser, this));
+    router.get('/', RouterMethod(this.ListUser, this));
     return router;
   }
 

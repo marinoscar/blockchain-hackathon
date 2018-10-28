@@ -5,16 +5,6 @@ import {Drug, DrugController, Helper, Models} from '../utils';
 
 const router: Router = Router();
 
-/** Get all the users */
-router.get('/users', async (req: Request, res: Response) => {
-  try {
-    res.send(await Models.getAllParticipants());
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-  }
-});
-
 /** Get all the drugs! */
 router.get('/', async (req: Request, res: Response) => {
   console.log('get');
