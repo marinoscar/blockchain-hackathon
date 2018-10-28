@@ -74,12 +74,12 @@ export class CoffeeControllerClient extends ConvectorController {
     
     id: string,
     
-    components: Array<Coffee>,
+    componentIds: Array<string>,
     
     modifiedDate: number
   ) {
 
-          return await this.adapter.invoke(this.name, 'join', this.user, id, components, modifiedDate);
+          return await this.adapter.invoke(this.name, 'join', this.user, id, componentIds, modifiedDate);
         
   }
 

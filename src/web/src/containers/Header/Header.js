@@ -14,7 +14,7 @@ class Header extends React.Component {
             alt=""
           />
         </a>
-        <h1 className="title text-white">Golden Bean</h1>
+        <h1 className="title text-white">Golden Bean Tracker</h1>
         <button
           className="navbar-toggler"
           type="button"
@@ -34,7 +34,6 @@ class Header extends React.Component {
     );
   }
 }
-
 
 const header = connect()(Header);
 export { header as Header };
