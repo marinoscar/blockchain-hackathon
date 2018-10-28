@@ -7,6 +7,7 @@ import {
 } from '@worldsibu/convector-core-controller';
 
 import { Coffee } from '../src/coffee.model';
+import { Location } from '../src/location.model';
 import { ControllerAdapter } from '@worldsibu/convector-core-adapter';
 
 
@@ -69,12 +70,13 @@ export class CoffeeControllerClient extends ConvectorController {
         
   }
 
+  
   public async join(
     
     id: string,
     
     components: Array<Coffee>,
-        
+    
     modifiedDate: number
   ) {
 
@@ -82,12 +84,13 @@ export class CoffeeControllerClient extends ConvectorController {
         
   }
 
+  
   public async split(
     
     id: string,
     
     splitIds: Array<string>,
-        
+    
     modifiedDate: number
   ) {
 
@@ -95,12 +98,24 @@ export class CoffeeControllerClient extends ConvectorController {
         
   }
 
+  
   public async getHistory(
     
     id: string
   ) {
 
           return await this.adapter.invoke(this.name, 'getHistory', this.user, id);
+        
+  }
+
+  
+  public async changeLocation(
+    
+    id: string,
+    location: Location
+  ) {
+
+          return await this.adapter.invoke(this.name, 'changeLocation', this.user, id, location);
         
   }
 }

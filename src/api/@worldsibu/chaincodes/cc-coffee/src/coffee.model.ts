@@ -6,6 +6,7 @@ import {
   Validate,
   Default
 } from '@worldsibu/convector-core-model';
+import { Location } from './location.model';
 
 export class Coffee extends ConvectorModel<Coffee> {
 
@@ -70,4 +71,6 @@ export class Coffee extends ConvectorModel<Coffee> {
 
   @Validate(yup.array(yup.object()))
   public components: Array<Coffee>;
+
+  public location: Location;
 }
