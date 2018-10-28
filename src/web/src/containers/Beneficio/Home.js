@@ -8,6 +8,8 @@ import { Row, Col } from 'react-bootstrap';
 import 'react-loading-bar/dist/index.css';
 import { Menu } from './Menu';
 import { AssetList } from './AssetList';
+import { AssetCreate } from './AssetCreate';
+import { AssetDetails } from './AssetDetails';
 import { store } from '../../helpers';
 
 class Home extends React.Component {
@@ -29,6 +31,11 @@ class Home extends React.Component {
             <Col md="10" className="page-wrapper">
               <Switch>
                 <Route path="/beneficio/cafe-recibido" component={AssetList} />
+                <Route path="/beneficio/assets/crear" component={AssetCreate} />
+                <Route
+                  path="/beneficio/assets/:id/detalles"
+                  component={AssetDetails}
+                />
               </Switch>
             </Col>
           </Row>
