@@ -4,7 +4,7 @@ import 'react-table/react-table.css';
 import DataTable from '../../components/DataTable';
 import { getTableConfigurations } from './AssetColumnsSettings';
 
-class AssetList extends React.Component {
+class AssetListSold extends React.Component {
   componentDidMount() {}
 
   render() {
@@ -46,5 +46,5 @@ class AssetList extends React.Component {
   }
 }
 
-const assetList = connect()(AssetList);
-export { assetList as AssetList };
+const assetListSold = connect()(AssetListSold);
+export { assetListSold as AssetListSold };

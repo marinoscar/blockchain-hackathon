@@ -17,7 +17,7 @@ function getTableConfigurations() {
       Cell: cell => {
         return (
           <div>
-            <Link to={`/beneficio/assets/0/detalles`} className="mr-4">
+            <Link to={`/beneficio/assets/1/detalles`} className="mr-4">
               {cell.row.sku}
             </Link>
           </div>
@@ -43,6 +43,14 @@ function getTableConfigurations() {
     {
       Header: 'Ubicación Actual',
       accessor: 'location'
+    },
+    {
+      Header: 'Calidad',
+      accessor: 'quality'
+    },
+    {
+      Header: 'Clasificación',
+      accessor: 'classification'
     }
   ];
 }

@@ -7,7 +7,8 @@ class AssetCreate extends React.Component {
   render() {
     const defaultValues = {
       description: 'Hola',
-      owner: 'Coopronaranjorl'
+      owner: 'Coopronaranjorl',
+      status: 'Nuevo'
     };
 
     return (
