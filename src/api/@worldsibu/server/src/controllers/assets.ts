@@ -53,7 +53,7 @@ export class AssetsController extends Controller {
       req.params.id,
       req.body.quality,
       req.body.classification,
-      req.body.modifiedDate
+      Date.now(),
     );
     res.sendStatus(201);
   }
@@ -65,7 +65,7 @@ export class AssetsController extends Controller {
     await locationClient.transfer(
       req.params.id,
       req.body.to,
-      req.body.modifiedDate
+      Date.now(),
     );
     res.sendStatus(201);
   }
@@ -87,7 +87,7 @@ export class AssetsController extends Controller {
     await locationClient.split(
       req.params.id,
       req.body.splitIds,
-      req.body.modifiedDate
+      Date.now(),
     );
     res.sendStatus(201);
   }
