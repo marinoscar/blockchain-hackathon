@@ -5,7 +5,7 @@ type RequestHandler = (req: Request, res: Response) => void;
 
 function RouterMethod(handler: RequestHandler, self?): RequestHandler {
   if (self) {
-    handler = handler.apply(self);
+    handler = handler.bind(self);
   }
   return async (req: Request, res: Response) => {
     try {
