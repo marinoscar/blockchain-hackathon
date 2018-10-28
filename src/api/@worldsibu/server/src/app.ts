@@ -6,7 +6,6 @@ import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import * as NodeCouchDb from 'node-couchdb';
 import {initUsers} from './init';
-import {DrugCtrl} from './controllers';
 import {UsersController} from './controllers/users';
 import {CouchDbStore, UserStore} from './store';
 import {FabricAdapterBuilder} from './utils/adapter-builder';
@@ -55,7 +54,8 @@ const locationFabricBuilder = new FabricAdapterBuilder(
 
 // Controllers
 const usersController = new UsersController(userStore);
-const locationsController = new LocationsController(locationStore, locationFabricBuilder);
+const locationsController = new LocationsController(locationStore,
+    locationFabricBuilder);
 
 const app: express.Application = express();
 app.use(bodyParser.urlencoded({extended: true, limit: '40mb'}));
@@ -71,8 +71,6 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
-
-app.use('/drug', DrugCtrl);
 
 // Create users and start listener
 const fabricUserIds = Array.from(users.values()).map(u => u.fabricId);
