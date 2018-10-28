@@ -19,6 +19,11 @@
       "name": "@worldsibu/cc-coffee",
       "version": "file:./@worldsibu/chaincodes/cc-coffee",
       "controller": "CoffeeController"
+    },
+    {
+      "name": "@worldsibu/cc-location",
+      "version": "file:./@worldsibu/chaincodes/cc-location",
+      "controller": "LocationController"
     }
   ],
   "policy": {
