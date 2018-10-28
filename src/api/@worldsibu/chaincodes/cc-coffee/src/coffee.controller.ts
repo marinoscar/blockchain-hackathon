@@ -16,11 +16,11 @@ export class CoffeeController extends ConvectorController {
     id: string,
     @Param(yup.string())
     sku: string,
-    @Param(yup.number())
+    @Param(yup.string())
     variety: string,
-    @Param(yup.number())
+    @Param(yup.string())
     category: string,
-    @Param(yup.number())
+    @Param(yup.string())
     description: string,
     @Param(yup.number())
     value: number,
@@ -87,6 +87,73 @@ export class CoffeeController extends ConvectorController {
     }
     coffee.quality = quality;
     coffee.classification = classification;
+    coffee.modifiedBy = this.sender;
+    coffee.modifiedDate = modifiedDate;
+
+    await coffee.save();
+  }
+
+  @Invokable()
+  public async join(
+    @Param(yup.string())
+    id: string,
+    @Param(yup.array(yup.object()))
+    components: Array<Coffee>,
+    @Param(yup.number())
+    modifiedDate: number
+  ) {
+    const coffee = await Coffee.getOne(id);
+    if (coffee.owner !== this.sender) {
+      throw new Error('The current owner is the only user capable of join the coffee.');
+    }
+    let value = 0;
+    components.map(component => {
+      if (component.owner !== this.sender) {
+        throw new Error('The current owner is the only user capable of join components.');
+      }
+      if (coffee.components) {
+        coffee.components.push(component);
+      } else {
+        coffee.components = [component];
+      }
+      value = value + component.value;
+    })
+    coffee.value = value;
+    coffee.modifiedBy = this.sender;
+    coffee.modifiedDate = modifiedDate;
+
+    await coffee.save();
+  }
+
+  @Invokable()
+  public async split(
+    @Param(yup.string())
+    id: string,
+    @Param(yup.array(yup.string()))
+    splitIds: Array<string>,
+    @Param(yup.number())
+    modifiedDate: number
+  ) {
+    const coffee = await Coffee.getOne(id);
+    if (coffee.owner !== this.sender) {
+      throw new Error('The current owner is the only user capable of split the coffee.');
+    }
+    let value = 0;
+    splitIds.map(async (splitId) => {
+      const component = await Coffee.getOne(splitId);
+      if (component.owner !== this.sender) {
+        throw new Error('The current owner is the only user capable of split into splits.');
+      }
+      if (coffee.components) {
+        coffee.components.push(component);
+      } else {
+        coffee.components = [component];
+      }
+      value = value + component.value;
+    })
+    if (coffee.value !== value) {
+      throw new Error('The splits value sum should be the same as parents value');
+    }
     coffee.modifiedBy = this.sender;
     coffee.modifiedDate = modifiedDate;
 
