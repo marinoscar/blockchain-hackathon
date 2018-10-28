@@ -1,4 +1,5 @@
 import {Request, Response, Router} from 'express';
+import {UserStore} from '../store/user';
 
 type RequestHandler = (req: Request, res: Response) => void;
 
@@ -18,12 +19,10 @@ function RouterMethod(handler: RequestHandler, self?): RequestHandler {
 
 export class UsersController {
 
-  private readonly couchDb;
-  private readonly database: string;
+  private readonly store: UserStore;
 
-  constructor(couchDb, database: string) {
-    this.couchDb = couchDb;
-    this.database = database;
+  constructor(store: UserStore) {
+    this.store = store;
   }
 
   public Router(): Router {
@@ -32,21 +31,8 @@ export class UsersController {
     return router;
   }
 
-  private async ListUser(req: Request, res: Response) {
-    const selector = {
-      selector: {
-        type: 'io.worldsibu.examples.participant',
-      },
-    };
-    this.couchDb.mango(this.database, selector, {}).then(
-        (users) => {
-          res.status(200).send(users);
-        },
-        (err) => {
-          console.error(err);
-          res.status(500).send(err);
-        },
-    );
+  private async ListUser(_: Request, res: Response) {
+    const users = await this.store.List();
+    res.status(200).send(users);
   }
-
 }

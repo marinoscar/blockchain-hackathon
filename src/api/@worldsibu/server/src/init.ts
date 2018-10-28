@@ -6,10 +6,12 @@ import {
   Participant,
 } from '@worldsibu/convector-example-dsc-cc-participant/dist/client';
 import {Models} from './utils';
+import {UserStore} from './store/user';
 
 const fabricTimeout = 300000;
 
 export async function initUsers(
+    userStore: UserStore,
     users: Array<string>,
     organization: string,
     keyStorePath: string,
@@ -17,6 +19,7 @@ export async function initUsers(
     channel: string,
     chainCode: string,
 ) {
+  const existingUsers = await userStore.List();
   const promises = users.map((user) => {
     const adapter = new FabricControllerAdapter({
       user: user,
@@ -28,7 +31,7 @@ export async function initUsers(
       networkProfile: networkProfilePath,
       userMspPath: keyStorePath,
     });
-    return createParticipant(adapter, user, organization);
+    return createParticipant(adapter, user, organization, existingUsers);
   });
   await Promise.all(promises);
 }
@@ -37,11 +40,11 @@ async function createParticipant(
     adapter: FabricControllerAdapter,
     user: string,
     organization: string,
+    existingUsers: any[],
 ) {
   await adapter.init();
   const participantCtrl = new ParticipantControllerClient(adapter);
-  const users = await Models.getAllParticipants();
-  const userExists = users.find((u) => {
+  const userExists = existingUsers.find((u) => {
     return u.user === user && u.organization === organization;
   });
   if (!userExists) {

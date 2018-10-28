@@ -8,6 +8,7 @@ import * as NodeCouchDb from 'node-couchdb';
 import {initUsers} from './init';
 import {DrugCtrl} from './controllers';
 import {UsersController} from './controllers/users';
+import {UserStore} from './store/user';
 
 dotenv.config();
 
@@ -18,9 +19,10 @@ const couchDb = new NodeCouchDb({
   protocol:  process.env.COUCHDB_PROTOCOL,
   port: parseInt(process.env.COUCHDB_PORT),
 });
-const couchDatabaseName = process.env.COUCHDBVIEW;
 
-const usersController = new UsersController(couchDb, couchDatabaseName);
+const userStore = new UserStore(couchDb, process.env.COUCHDBVIEW);
+
+const usersController = new UsersController(userStore);
 
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -40,6 +42,8 @@ app.use((req, res, next) => {
 
 app.use('/drug', DrugCtrl);
 
+// data{}.docs[]
+
 // Create users and start listener
 
 const users = new Map([
@@ -51,6 +55,7 @@ const users = new Map([
 const rootDir = path.resolve(__dirname, '..');
 
 initUsers(
+    userStore,
     Array.from(users.values()),
     process.env.ORGCERT,
     path.resolve(rootDir, process.env.KEYSTORE),
