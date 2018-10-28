@@ -14,7 +14,7 @@ import {LocationsController} from './controllers/locations';
 
 const channel = process.env.CHANNEL;
 const userChainCode = 'participant';
-const locationChainCode = 'location';
+const locationChainCode = 'coffee';
 
 const rootDir = path.resolve(__dirname, '..');
 dotenv.config();
@@ -55,7 +55,7 @@ const locationFabricBuilder = new FabricAdapterBuilder(
 
 // Controllers
 const usersController = new UsersController(userStore);
-const locationsController = new LocationsController(couchDb, locationFabricBuilder);
+const locationsController = new LocationsController(locationStore, locationFabricBuilder);
 
 const app: express.Application = express();
 app.use(bodyParser.urlencoded({extended: true, limit: '40mb'}));
