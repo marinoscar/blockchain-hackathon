@@ -1,0 +1,40 @@
+@mixin respond-to($media) {
+    @if $media == handhelds {
+      @media only screen and (max-width: 320px) { @content; }
+    }
+    @else if $media == medium-screens {
+      @media only screen and (min-width: 321px) and (max-width: 425px) { @content; }
+    }
+    @else if $media == wide-screens {
+      @media only screen and (min-width: 426px) { @content; }
+    }
+}
+.navbar{
+    @include respond-to(medium-screens) { position: fixed }
+    @include respond-to(wide-screens) { position:fixed }
+    .padlft{
+        padding-left: 90%;
+    }
+    .header-color{
+        color:$white-color;
+        h2{
+            font-size: 2.3em;
+            margin-top: -1.5%;
+        }
+        h3{
+            font-size: 1.2rem;
+            margin-top: -4.5%;
+        }
+    }
+    .fa-sign-out-alt{
+        color: $eycard-color;
+    }
+    .title {
+        margin: 2px;
+    }
+    width: 100%;
+    padding: 6px;
+}
+.bg-dark{
+  background-color: #343a40!important;
+}

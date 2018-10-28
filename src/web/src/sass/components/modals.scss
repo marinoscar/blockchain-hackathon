@@ -1,0 +1,15 @@
+.fade.modal-backdrop.in{
+    opacity: 0.5!important;
+}
+
+.fade.in.modal {
+  opacity: 1!important;
+}
+
+.modal-dialog {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%) !important;
+     width: 50%;
+ }

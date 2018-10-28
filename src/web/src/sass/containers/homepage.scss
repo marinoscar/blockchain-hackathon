@@ -1,0 +1,72 @@
+@mixin respond-to($media) {
+    @if $media == handhelds {
+      @media only screen and (max-width: 320px) { @content; }
+    }
+    @else if $media == medium-screens {
+      @media only screen and (min-width: 321px) and (max-width: 425px) { @content; }
+    }
+    @else if $media == wide-screens {
+      @media only screen and (min-width: 426px) { @content; }
+    }
+}
+
+.home{
+  height: 100vh;
+    @include respond-to(handhelds) { margin-top: 0px; }
+    @include respond-to(medium-screens) { margin-top: 195px }
+    @include respond-to(wide-screens) { margin-top: 76px }
+    background-color: $dark-gray;
+    .card-body{
+        background-color: $eycard-color;
+        text-align: center;
+    }
+    .card{
+        border-radius: 15px;
+        border-color: black;
+    }
+    .card-m{
+        margin-top: 5%;
+        padding: 40px;
+        min-height: 240px;
+    }
+    h5{
+        color:$black;
+        margin-top:2%;
+        font-size: 2em;
+    }
+    .card-m{
+        @include respond-to(handhelds) { margin: 1px; }
+        @include respond-to(medium-screens) { margin: 3% 3% 0 0; }
+        @include respond-to(wide-screens) { margin: 3% 3% 0 0; }
+    }
+    .container{
+        max-width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+    .column{
+        @include respond-to(handhelds) { padding: 1px; }
+        @include respond-to(medium-screens) { padding: 0 15px 0 15px; }
+        @include respond-to(wide-screens) { padding: 0 15px 0 15px; }
+    }
+    .column-middle{
+        border-style: dotted;
+        border-width: 0 2px 0 2px;
+        border-color: rgba(255,255,255,.5);;
+    }
+    .column .nav-link{
+        margin-top:2em;
+        @include respond-to(handhelds) { padding: 1px; }
+        @include respond-to(medium-screens) { padding: 0 15px 0 15px; }
+        @include respond-to(wide-screens) { padding: 0 15px 0 15px; }
+    }
+    .column p{
+        text-align: justify;
+        color: $light-gray;
+        margin-top: 60px;
+        @include respond-to(handhelds) { padding: 1px; }
+        @include respond-to(medium-screens) { padding: 0 15px 0 15px; }
+        @include respond-to(wide-screens) { padding: 0 15px 0 15px; }
+    }
+}

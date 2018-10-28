@@ -1,0 +1,26 @@
+.ReactTable{
+    .rt-thead.-header{
+        background-color: $eycard-color;
+        padding: 0px;
+        color: $dark;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .rt-thead.-headerGroups{
+        background-color: $ey-light-yellow-color;
+        font-weight: bold;
+    }
+    .rt-resizable-header-content{
+        float: left;
+    }
+    .custom-column-header{
+        background-color: $eycard-color;
+        color: $dark;
+        font-size: 18px;
+    }
+    .custom-column-header-light-yellow {
+        background-color: $ey-light-yellow-color !important;
+        color: $dark;
+        font-size: 18px;
+    }
+}

@@ -1,0 +1,19 @@
+.submitfilter{
+    width: 65%;
+    margin: 0 auto;
+}
+
+
+input[type=checkbox] {
+    margin-right: 8px;
+}
+input[type=checkbox] > label {
+    display: none;
+}
+
+.form-control-no-border{
+    border:0px !important;
+}
+.form-control-no-background{
+    background-color:white !important;
+}

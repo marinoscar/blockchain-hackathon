@@ -1,0 +1,28 @@
+@mixin respond-to($media) {
+    @if $media == handhelds {
+      @media only screen and (max-width: 320px) { @content; }
+    }
+    @else if $media == medium-screens {
+      @media only screen and (min-width: 321px) and (max-width: 425px) { @content; }
+    }
+    @else if $media == wide-screens {
+      @media only screen and (min-width: 426px) { @content; }
+    }
+}
+
+.menu-wrapper {
+    @include respond-to(handhelds) { position: relative; }
+    @include respond-to(medium-screens) { position: relative; }
+    @include respond-to(wide-screens) { position: fixed; }
+    overflow-x: hidden;
+    padding-right: 0;
+    height: 100%;
+    z-index: 999;
+}
+
+.menu-fake {
+    margin-right: -5px;
+    @include respond-to(handhelds) { display: none; }
+    @include respond-to(medium-screens) { display: none; }
+    @include respond-to(wide-screens) { display: inherit; }
+}
