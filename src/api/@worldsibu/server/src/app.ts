@@ -7,6 +7,7 @@ import * as dotenv from 'dotenv';
 import * as NodeCouchDb from 'node-couchdb';
 import {initUsers} from './init';
 import {DrugCtrl} from './controllers';
+import {UsersController} from './controllers/users';
 
 dotenv.config();
 
@@ -17,6 +18,9 @@ const couchDb = new NodeCouchDb({
   protocol:  process.env.COUCHDB_PROTOCOL,
   port: parseInt(process.env.COUCHDB_PORT),
 });
+const couchDatabaseName = process.env.COUCHDBVIEW;
+
+const usersController = new UsersController(couchDb, couchDatabaseName);
 
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -24,6 +28,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(bodyParser.json({limit: '40mb'}));
+
+app.use('/other', usersController.Router());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
