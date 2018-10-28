@@ -20,7 +20,7 @@ export class AssetsController extends Controller {
     const router = Router();
     router.get('/', this.routerMethod(this.list));
     router.post('/', this.routerMethod(this.create));
-    router.post('/joins', this.routerMethod(this.join));
+    router.post('/:id/join', this.routerMethod(this.join));
     router.get('/:id', this.routerMethod(this.get));
     return router;
   }
@@ -47,15 +47,27 @@ export class AssetsController extends Controller {
   }
 
   private async list(_req: Request, res: Response) {
-    const users = await this.store.list();
-    res.status(200).send(users);
+    const coffeeAssets = await this.store.list();
+    res.status(200).send(coffeeAssets);
   }
 
   private async join(req: Request, res: Response) {
+    const coffeeAssets = await this.store.list();
+    const destinationId = req.params.id;
+    if (!coffeeAssets.find((asset) => asset.id === destinationId)) {
+      return res.status(404).send('Destination asset not found');
+    }
+    const components = req.body.components;
+    const invalidComponent = components.some((componentId) => {
+      return !coffeeAssets.find((asset) => asset.id === componentId)
+    });
+    if (invalidComponent) {
+      return res.status(404).send('Component asset not found');
+    }
     const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
     await fabricAdapter.init();
     const coffeeClient = new CoffeeControllerClient(fabricAdapter);
-    await coffeeClient.join(uuid(), req.body.components, Date.now());
+    await coffeeClient.join(destinationId, req.body.components, Date.now());
     res.sendStatus(201);
   }
 }
