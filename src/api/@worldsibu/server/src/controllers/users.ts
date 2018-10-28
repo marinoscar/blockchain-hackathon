@@ -1,22 +1,23 @@
 import {Request, Response, Router} from 'express';
-import {RouterMethod} from './handler';
+import {Controller} from './controller';
 import {UserStore} from '../store/user';
 
-export class UsersController {
+export class UsersController extends Controller {
 
   private readonly store: UserStore;
 
   constructor(store: UserStore) {
+    super();
     this.store = store;
   }
 
-  public Router(): Router {
+  public router(): Router {
     const router = Router();
-    router.get('/', RouterMethod(this.ListUser, this));
+    router.get('/', this.routerMethod(this.listUsers));
     return router;
   }
 
-  private async ListUser(_: Request, res: Response) {
+  private async listUsers(_req: Request, res: Response) {
     const users = await this.store.List();
     res.status(200).send(users);
   }

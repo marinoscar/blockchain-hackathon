@@ -3,8 +3,6 @@ import { CouchDBStorage } from '@worldsibu/convector-storage-couchdb';
 import { Drug as DrugModel } from '@worldsibu/convector-example-dsc-cc-drug';
 import { Participant as ParticipantModel } from '@worldsibu/convector-example-dsc-cc-participant';
 
-import { Helper } from './helper';
-
 BaseStorage.current = new CouchDBStorage({
   host: process.env.COUCHDB_HOST,
   protocol: process.env.COUCHDB_PROTOCOL,
@@ -23,30 +21,6 @@ export namespace Models {
   export async function formatParticipant(participant: ParticipantModel): Promise<any> {
     const participantObj = participant.toJSON();
     return participantObj;
-  }
-
-  export async function getAllParticipants() {
-    const channel = Helper.channel;
-    const cc = Helper.drugCC;
-    // _drug is equivalent to the name of your chaincode
-    // it gets generated on the world state
-    const dbName = `${channel}_${cc}`;
-    const viewUrl = '_design/participants/_view/all';
-
-    const queryOptions = { startKey: [''], endKey: [''] };
-
-    try {
-      const result = <ParticipantModel[]>(await Participant.query(Participant, dbName, viewUrl, queryOptions));
-
-      return await Promise.all(result.map(formatParticipant));
-    } catch (err) {
-      console.log(err);
-      if (err.code === 'EDOCMISSING') {
-        return [];
-      } else {
-        throw err;
-      }
-    }
   }
 
   export const Drug = DrugModel;

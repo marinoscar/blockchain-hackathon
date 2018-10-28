@@ -6,30 +6,17 @@ import {
   ParticipantControllerClient,
 } from '@worldsibu/convector-example-dsc-cc-participant/dist/client';
 import {UserStore} from './store/user';
-
-const fabricTimeout = 300000;
+import {FabricAdapterBuilder} from './utils/adapter-builder';
 
 export async function initUsers(
     userStore: UserStore,
     users: Array<string>,
     organization: string,
-    keyStorePath: string,
-    networkProfilePath: string,
-    channel: string,
-    chainCode: string,
+    fabricBuilder: FabricAdapterBuilder,
 ) {
   const existingUsers = await userStore.List();
   const promises = users.map((user) => {
-    const adapter = new FabricControllerAdapter({
-      user: user,
-      txTimeout: fabricTimeout,
-      // set it later to enable Mutual TLS
-      channel: channel,
-      chaincode: chainCode,
-      keyStore: keyStorePath,
-      networkProfile: networkProfilePath,
-      userMspPath: keyStorePath,
-    });
+    const adapter = fabricBuilder.build(user);
     return createParticipant(adapter, user, organization, existingUsers);
   });
   await Promise.all(promises);
