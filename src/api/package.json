@@ -31,7 +31,7 @@
     "env:restart": "./node_modules/@worldsibu/convector-tool-dev-env/scripts/restart.sh",
     "env:clean": "./node_modules/@worldsibu/convector-tool-dev-env/scripts/clean.sh",
     "================= Chaincodes =================": "==================================",
-    "cc:start": "f() { npm-run-all -s cc:package -p \"cc:install -- org1 $1\" \"cc:install -- org2 $1\" -s wait \"cc:instantiate -- $1\"; }; f",
+    "cc:start": "sh install-chaincodes.sh",
     "cc:package": "chaincode-manager --config ./org1.chaincode.config.json --output ./chaincode package",
     "cc:install": "f() { chaincode-manager --config ./$1.chaincode.config.json install ./chaincode drug $2; }; f",
     "cc:instantiate": "chaincode-manager --config ./org1.chaincode.config.json instantiate drug",
