@@ -72,15 +72,15 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/drug', DrugCtrl);
+// app.use('/drug', DrugCtrl);
 
 // Create users and start listener
 const fabricUserIds = Array.from(users.values()).map(u => u.fabricId);
 const port = process.env.PORT || 10100;
-// initUsers(userStore, fabricUserIds, process.env.ORGCERT, userFabricBuilder).
-    // then(() => {
+ initUsers(userStore, fabricUserIds, process.env.ORGCERT, userFabricBuilder).
+    then(() => {
       app.listen(port, () => console.log(`Listening on port ${port}...`));
-    // }).
-    // catch(err => {
-    //   console.error(err);
-    // });
+    }).
+    catch(err => {
+      console.error(err);
+    });
