@@ -6,8 +6,8 @@ export abstract class Controller {
 
   public abstract router(): Router;
 
-  protected getUserId(): string {
-    return 'user1';
+  protected static getUserId(req: Request): string {
+    return req.query['user'] || 'user1';
   }
 
   protected routerMethod(handler: RequestHandler): RequestHandler {
