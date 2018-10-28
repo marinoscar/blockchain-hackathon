@@ -11,6 +11,9 @@ import {UsersController} from './controllers/users';
 import {UserStore} from './store/user';
 import {FabricAdapterBuilder} from './utils/adapter-builder';
 
+const channel = process.env.CHANNEL;
+const userChainCode = 'participant';
+
 const rootDir = path.resolve(__dirname, '..');
 dotenv.config();
 
@@ -29,25 +32,21 @@ const couchDb = new NodeCouchDb({
 });
 
 // User Store
-const userStore = new UserStore(couchDb, process.env.COUCHDBVIEW, users);
+const userStore = new UserStore(couchDb, `${channel}_${userChainCode}`, users);
 
 // Fabric Adapter Builder
-const adapterBuilder = new FabricAdapterBuilder(
+const userFabricBuilder = new FabricAdapterBuilder(
     path.resolve(rootDir, process.env.KEYSTORE),
     path.resolve(rootDir, process.env.NETWORKPROFILE),
-    process.env.CHANNEL,
-    process.env.CHAINCODE,
+    channel,
+    userChainCode,
 );
 
 // Controllers
 const usersController = new UsersController(userStore);
 
 const app: express.Application = express();
-app.use(bodyParser.urlencoded({
-  extended: true,
-  limit: '40mb',
-}));
-
+app.use(bodyParser.urlencoded({extended: true, limit: '40mb'}));
 app.use(bodyParser.json({limit: '40mb'}));
 
 app.use('/users', usersController.router());
@@ -65,7 +64,7 @@ app.use('/drug', DrugCtrl);
 // Create users and start listener
 const fabricUserIds = Array.from(users.values()).map(u => u.fabricId);
 const port = process.env.PORT || 10100;
-initUsers(userStore, fabricUserIds, process.env.ORGCERT, adapterBuilder).
+initUsers(userStore, fabricUserIds, process.env.ORGCERT, userFabricBuilder).
     then(() => {
       app.listen(port, () => console.log(`Listening on port ${port}...`));
     }).
