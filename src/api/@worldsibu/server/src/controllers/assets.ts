@@ -21,6 +21,10 @@ export class AssetsController extends Controller {
     router.get('/', this.routerMethod(this.list));
     router.post('/', this.routerMethod(this.create));
     router.get('/:id', this.routerMethod(this.get));
+    router.get('/:id/history', this.routerMethod(this.history));
+    router.patch('/:id', this.routerMethod(this.update));
+    router.post('/:id/split', this.routerMethod(this.split));
+    router.post('/:id/transfer', this.routerMethod(this.transfer));
     return router;
   }
 
@@ -35,6 +39,53 @@ export class AssetsController extends Controller {
       req.body.description,
       req.body.value,
       req.body.createdDate
+    );
+    res.sendStatus(201);
+  }
+
+  public async update(req: Request, res: Response) {
+    const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
+    await fabricAdapter.init();
+    const locationClient = new CoffeeControllerClient(fabricAdapter);
+    await locationClient.updateQuality(
+      req.params.id,
+      req.body.quality,
+      req.body.classification,
+      req.body.modifiedDate
+    );
+    res.sendStatus(201);
+  }
+
+  public async transfer(req: Request, res: Response) {
+    const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
+    await fabricAdapter.init();
+    const locationClient = new CoffeeControllerClient(fabricAdapter);
+    await locationClient.transfer(
+      req.params.id,
+      req.body.to,
+      req.body.modifiedDate
+    );
+    res.sendStatus(201);
+  }
+
+  public async history(req: Request, res: Response) {
+    const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
+    await fabricAdapter.init();
+    const locationClient = new CoffeeControllerClient(fabricAdapter);
+    await locationClient.getHistory(
+      req.params.id
+    );
+    res.sendStatus(201);
+  }
+
+  public async split(req: Request, res: Response) {
+    const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
+    await fabricAdapter.init();
+    const locationClient = new CoffeeControllerClient(fabricAdapter);
+    await locationClient.split(
+      req.params.id,
+      req.body.splitIds,
+      req.body.modifiedDate
     );
     res.sendStatus(201);
   }
