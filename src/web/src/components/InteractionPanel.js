@@ -93,7 +93,7 @@ class InteractionPanel extends React.Component {
         case 'PROCESSED':
           return this.buildTimelineCard(
             interaction,
-            'Processed con Calidad HB y clasificación diferenciado A',
+            'Procesado con calidad HB y clasificación diferenciado A',
             '#6FBA1C',
             'fas fa-wrench'
           );

@@ -18,14 +18,14 @@ export class AssetsController extends Controller {
 
   public router(): Router {
     const router = Router();
-    router.get('/', this.routerMethod(this.list));
-    router.post('/', this.routerMethod(this.create));
     router.post('/:id/join', this.routerMethod(this.join));
-    router.get('/:id', this.routerMethod(this.get));
     router.get('/:id/history', this.routerMethod(this.history));
-    router.patch('/:id', this.routerMethod(this.update));
     router.post('/:id/split', this.routerMethod(this.split));
     router.post('/:id/transfer', this.routerMethod(this.transfer));
+    router.patch('/:id', this.routerMethod(this.update));
+    router.get('/:id', this.routerMethod(this.get));
+    router.get('/', this.routerMethod(this.list));
+    router.post('/', this.routerMethod(this.create));
     return router;
   }
 
@@ -40,7 +40,7 @@ export class AssetsController extends Controller {
         req.body.category,
         req.body.description,
         req.body.value,
-        req.body.createdDate,
+        Date.now(),
     );
     res.sendStatus(201);
   }
@@ -53,7 +53,7 @@ export class AssetsController extends Controller {
       req.params.id,
       req.body.quality,
       req.body.classification,
-      req.body.modifiedDate
+      Date.now(),
     );
     res.sendStatus(201);
   }
@@ -65,7 +65,7 @@ export class AssetsController extends Controller {
     await locationClient.transfer(
       req.params.id,
       req.body.to,
-      req.body.modifiedDate
+      Date.now(),
     );
     res.sendStatus(201);
   }
@@ -87,7 +87,7 @@ export class AssetsController extends Controller {
     await locationClient.split(
       req.params.id,
       req.body.splitIds,
-      req.body.modifiedDate
+      Date.now(),
     );
     res.sendStatus(201);
   }
