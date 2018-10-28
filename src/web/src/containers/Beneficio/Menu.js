@@ -6,13 +6,23 @@ export const Menu = [
     to: '/beneficio/dashboard'
   },
   {
-    icon: 'map-marker',
+    icon: 'plus',
+    label: 'Crear asset',
+    to: '/beneficio/assets/crear'
+  },
+  {
+    icon: 'arrow-down',
     label: 'Café recibido',
     to: '/beneficio/cafe-recibido'
   },
   {
-    icon: 'map-marker',
-    label: 'Café clasificado',
-    to: '/beneficio/cafe-clasificado'
+    icon: 'industry',
+    label: 'Café procesado',
+    to: '/beneficio/cafe-procesado'
+  },
+  {
+    icon: 'arrow-up',
+    label: 'Café vendido',
+    to: '/beneficio/cafe-vendido'
   }
 ];

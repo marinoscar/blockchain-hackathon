@@ -1,8 +1,8 @@
-import { Request, Response, Router } from 'express';
-import { Controller } from './controller';
-import { CouchDbStore } from '../store';
-import { FabricAdapterBuilder } from '../utils/adapter-builder';
-import { CoffeeControllerClient } from '@worldsibu/cc-coffee/dist/client';
+import {Request, Response, Router} from 'express';
+import {Controller} from './controller';
+import {CouchDbStore} from '../store';
+import {FabricAdapterBuilder} from '../utils/adapter-builder';
+import {CoffeeControllerClient} from '@worldsibu/cc-coffee/dist/client';
 import * as uuid from 'uuid/v4';
 
 export class AssetsController extends Controller {
@@ -20,6 +20,7 @@ export class AssetsController extends Controller {
     const router = Router();
     router.get('/', this.routerMethod(this.list));
     router.post('/', this.routerMethod(this.create));
+    router.post('/:id/join', this.routerMethod(this.join));
     router.get('/:id', this.routerMethod(this.get));
     router.get('/:id/history', this.routerMethod(this.history));
     router.patch('/:id', this.routerMethod(this.update));
@@ -31,14 +32,15 @@ export class AssetsController extends Controller {
   public async create(req: Request, res: Response) {
     const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
     await fabricAdapter.init();
-    const locationClient = new CoffeeControllerClient(fabricAdapter);
-    await locationClient.create(uuid(),
-      req.body.sku,
-      req.body.variety,
-      req.body.category,
-      req.body.description,
-      req.body.value,
-      req.body.createdDate
+    const coffeeClient = new CoffeeControllerClient(fabricAdapter);
+    await coffeeClient.create(
+        uuid(),
+        req.body.sku,
+        req.body.variety,
+        req.body.category,
+        req.body.description,
+        req.body.value,
+        req.body.createdDate,
     );
     res.sendStatus(201);
   }
@@ -96,7 +98,27 @@ export class AssetsController extends Controller {
   }
 
   private async list(_req: Request, res: Response) {
-    const users = await this.store.list();
-    res.status(200).send(users);
+    const coffeeAssets = await this.store.list();
+    res.status(200).send(coffeeAssets);
+  }
+
+  private async join(req: Request, res: Response) {
+    const coffeeAssets = await this.store.list();
+    const destinationId = req.params.id;
+    if (!coffeeAssets.find((asset) => asset.id === destinationId)) {
+      return res.status(404).send('Destination asset not found');
+    }
+    const components = req.body.components;
+    const invalidComponent = components.some((componentId) => {
+      return !coffeeAssets.find((asset) => asset.id === componentId)
+    });
+    if (invalidComponent) {
+      return res.status(404).send('Component asset not found');
+    }
+    const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
+    await fabricAdapter.init();
+    const coffeeClient = new CoffeeControllerClient(fabricAdapter);
+    await coffeeClient.join(destinationId, req.body.components, Date.now());
+    res.sendStatus(201);
   }
 }

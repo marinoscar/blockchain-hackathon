@@ -8,6 +8,8 @@ import { Row, Col } from 'react-bootstrap';
 import 'react-loading-bar/dist/index.css';
 import { Menu } from './Menu';
 import { AssetList } from './AssetList';
+import { AssetListSold } from './AssetListSold';
+import { AssetListProcessed } from './AssetListProcessed';
 import { AssetCreate } from './AssetCreate';
 import { AssetDetails } from './AssetDetails';
 import { store } from '../../helpers';
@@ -37,6 +39,14 @@ class Home extends React.Component {
                   component={AssetList}
                 />
                 <Route path="/beneficio/cafe-recibido" component={AssetList} />
+                <Route
+                  path="/beneficio/cafe-procesado"
+                  component={AssetListProcessed}
+                />
+                <Route
+                  path="/beneficio/cafe-vendido"
+                  component={AssetListSold}
+                />
                 <Route path="/beneficio/assets/crear" component={AssetCreate} />
                 <Route
                   path="/beneficio/assets/:id/detalles"
