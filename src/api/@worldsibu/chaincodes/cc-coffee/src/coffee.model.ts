@@ -24,7 +24,7 @@ export class Coffee extends ConvectorModel<Coffee> {
 
   @ReadOnly()
   @Required()
-  @Validate(yup.string())
+  @Validate(yup.number())
   public value: number;
 
   @ReadOnly()
@@ -67,4 +67,7 @@ export class Coffee extends ConvectorModel<Coffee> {
   @Required()
   @Validate(yup.string())
   public modifiedBy: string;
+
+  @Validate(yup.array(yup.object()))
+  public components: Array<Coffee>;
 }

@@ -68,4 +68,30 @@ export class CoffeeControllerClient extends ConvectorController {
           return await this.adapter.invoke(this.name, 'updateQuality', this.user, id, quality, classification, modifiedDate);
         
   }
+
+  public async join(
+    
+    id: string,
+    
+    components: Array<Coffee>,
+        
+    modifiedDate: number
+  ) {
+
+          return await this.adapter.invoke(this.name, 'join', this.user, id, components, modifiedDate);
+        
+  }
+
+  public async split(
+    
+    id: string,
+    
+    splitIds: Array<string>,
+        
+    modifiedDate: number
+  ) {
+
+          return await this.adapter.invoke(this.name, 'split', this.user, id, splitIds, modifiedDate);
+        
+  }
 }
