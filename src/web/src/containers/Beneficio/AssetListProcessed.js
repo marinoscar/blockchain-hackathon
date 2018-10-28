@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import 'react-table/react-table.css';
 import DataTable from '../../components/DataTable';
-import { getTableConfigurations } from './AssetColumnsSettings';
+import { getTableConfigurations } from './AssetColumnsSettingsProcessed';
 
-class AssetList extends React.Component {
+class AssetListProcessed extends React.Component {
   componentDidMount() {}
 
   render() {
@@ -24,7 +24,9 @@ class AssetList extends React.Component {
                     producer: 'Carlos Méndez',
                     ownership: 'Coopronaranjorl',
                     location: 'LLano Bonito (Recibidor)',
-                    status: 'Recibido'
+                    status: 'Recibido',
+                    classification: 'Diferenciado A',
+                    quality: 'HB'
                   },
                   {
                     sku: '01130000',
@@ -33,7 +35,9 @@ class AssetList extends React.Component {
                     producer: 'El T',
                     ownership: 'Coopronaranjorl',
                     location: 'LLano Bonito (Recibidor)',
-                    status: 'Recibido'
+                    status: 'Recibido',
+                    classification: 'Diferencaido B',
+                    quality: 'SHB'
                   }
                 ]}
                 columns={getTableConfigurations()}
@@ -46,5 +50,5 @@ class AssetList extends React.Component {
   }
 }
 
-const assetList = connect()(AssetList);
-export { assetList as AssetList };
+const assetListProcessed = connect()(AssetListProcessed);
+export { assetListProcessed as AssetListProcessed };

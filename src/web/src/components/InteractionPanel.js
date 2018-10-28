@@ -90,10 +90,10 @@ class InteractionPanel extends React.Component {
             '#e32',
             'far fa-file-excel'
           );
-        case 'PREPARE_AMEND':
+        case 'PROCESSED':
           return this.buildTimelineCard(
             interaction,
-            'Amend prepared',
+            'Processed con Calidad HB y clasificación diferenciado A',
             '#6FBA1C',
             'fas fa-wrench'
           );
@@ -133,22 +133,14 @@ class InteractionPanel extends React.Component {
         )}
         {acceptOrReject && (
           <div className="row">
-            <div className="col-md-6 ">
-              <button
-                type="button"
-                className="btn btn-ey w-100"
-                onClick={this.handleReject}
-              >
-                {this.props.showDispute ? 'Dispute' : 'Reject'}
-              </button>
-            </div>
+            <div className="col-md-6 " />
             <div className="col-md-6 ">
               <button
                 type="button"
                 className="btn btn-success w-100"
                 onClick={this.handleApprove}
               >
-                Accept
+                Procesar
               </button>
             </div>
           </div>

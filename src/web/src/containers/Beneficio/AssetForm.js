@@ -108,16 +108,37 @@ class AssetForm extends React.Component {
                 </option>
                 <option value="Cañuela-Naranjo">Cañuela-Naranjop</option>
               </Field>
+
+              {this.props.status === 'Procesado' && (
+                <div>
+                  <Field
+                    name="quality"
+                    label="Calidad"
+                    type="text"
+                    component={InputField}
+                    disabled={this.disableField}
+                  />
+
+                  <Field
+                    name="classification"
+                    label="Clasificación"
+                    type="text"
+                    component={InputField}
+                    disabled={this.disableField}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="col-md-4 col-xs-12">
               <div className="row">
-                <h2>Estado: Nuevo</h2>
+                <h2>Estado: {this.props.status}</h2>
                 <div className="col-md-12 ">
                   <InteractionPanel
                     showDraft
+                    acceptOrReject={this.props.status === 'Recibido'}
                     interactions={this.props.interactions}
-                    createOrSaveDraft={!this.detailsPage}
+                    createOrSaveDraft={this.props.status === 'Nuevo'}
                     onAmendClick={handleSubmit(this.onSubmit.bind(this))}
                     onCreateClick={handleSubmit(this.onSubmit.bind(this))}
                     onSaveDraftClick={handleSubmit(this.onSubmit.bind(this))}
@@ -141,9 +162,11 @@ AssetForm = reduxForm({
 function mapStateToProps(state, ownProps) {
   const selector = formValueSelector(ownProps.form);
   const interactions = selector(state, 'interactions');
+  const status = selector(state, 'status');
   return {
     validate,
-    interactions
+    interactions,
+    status
   };
 }
 
