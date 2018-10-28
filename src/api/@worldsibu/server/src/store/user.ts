@@ -19,6 +19,14 @@ export class UserStore extends CouchDbStore {
     this.userMapping = fabricMapping;
   }
 
+  public get(id: string): Promise<any> {
+    const self = this;
+    return super.get(id).then((user) => {
+      user.name = self.userMapping.get(user.user);
+      return user;
+    });
+  }
+
   public list(): Promise<any[]> {
     const self = this;
     return super.list().then((users) => {

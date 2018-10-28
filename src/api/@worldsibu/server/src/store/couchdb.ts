@@ -8,6 +8,15 @@ export class CouchDbStore {
     this.database = database;
   }
 
+  public get(id: string): Promise<any> {
+    const self = this;
+    return new Promise<any>((resolve, reject) => {
+      self.couchDb.get(self.database, id).then((result) => {
+        resolve(result.data);
+      }, reject);
+    });
+  }
+
   public list(): Promise<any[]> {
     const selector = {
       selector: {
@@ -15,7 +24,7 @@ export class CouchDbStore {
       },
     };
     const self = this;
-    return new Promise((resolve, reject) => {
+    return new Promise<any[]>((resolve, reject) => {
       self.couchDb.mango(self.database, selector, {}).then((result) => {
         resolve(result.data.docs);
       }, reject);

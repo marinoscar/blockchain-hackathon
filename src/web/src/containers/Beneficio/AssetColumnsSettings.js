@@ -13,7 +13,19 @@ function getTableConfigurations() {
     },
     {
       Header: 'SKU',
-      accessor: 'sku'
+      accessor: 'sku',
+      Cell: cell => {
+        return (
+          <div>
+            <Link
+              to={`/beneficio/assets/${cell.row.sku}/detalles`}
+              className="mr-4"
+            >
+              {cell.row.sku}
+            </Link>
+          </div>
+        );
+      }
     },
     {
       Header: 'Fanegas',
