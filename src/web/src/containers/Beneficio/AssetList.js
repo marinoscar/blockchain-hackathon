@@ -30,10 +30,9 @@ class AssetList extends React.Component {
                     fanegas: '10',
                     variety: 'Tipia',
                     producer: 'El T',
-                    ownership: 'Coopenaranjo',
+                    ownership: 'Coopronaranjorl',
                     location: 'LLano Bonito (Recibidor)'
-                  },
-                  {}
+                  }
                 ]}
                 columns={getTableConfigurations()}
               />
