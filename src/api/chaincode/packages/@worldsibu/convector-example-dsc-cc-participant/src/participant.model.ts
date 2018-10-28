@@ -25,13 +25,4 @@ export class Participant extends ConvectorModel<Participant> {
   @Validate(yup.number())
   /** Unmodifiable date of creation. Default will be the date when created the object. */
   public created: number;
-
-  @ReadOnly()
-  @Required()
-  @Validate(yup.number())
-  public role: number;
-
-  @ReadOnly()
-  @Validate(yup.number())
-  public locationId: number;
 }
