@@ -7,7 +7,6 @@ import {
 } from '@worldsibu/convector-core-controller';
 
 import { Coffee } from '../src/coffee.model';
-import { Location } from '../src/location.model';
 import { ControllerAdapter } from '@worldsibu/convector-core-adapter';
 
 
@@ -112,10 +111,11 @@ export class CoffeeControllerClient extends ConvectorController {
   public async changeLocation(
     
     id: string,
-    location: Location
+    
+    locationId: number
   ) {
 
-          return await this.adapter.invoke(this.name, 'changeLocation', this.user, id, location);
+          return await this.adapter.invoke(this.name, 'changeLocation', this.user, id, locationId);
         
   }
 }

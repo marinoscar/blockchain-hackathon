@@ -7,7 +7,6 @@ import {
 } from '@worldsibu/convector-core-controller';
 
 import { Coffee } from './coffee.model';
-import { Location } from './location.model';
 
 @Controller('coffee')
 export class CoffeeController extends ConvectorController {
@@ -174,13 +173,12 @@ export class CoffeeController extends ConvectorController {
   public async changeLocation(
     @Param(yup.string())
     id: string,
-    location: Location
+    @Param(yup.number())
+    locationId: number
   ) {
     const coffee = await Coffee.getOne(id);
-    if (coffee.owner !== this.sender) {
-      throw new Error('The current owner is the only user capable of change the coffee location.');
-    }
-    coffee.location = location;
+    // requires validation of current location owner
+    coffee.locationId = locationId;
     await coffee.save();
   }
 }

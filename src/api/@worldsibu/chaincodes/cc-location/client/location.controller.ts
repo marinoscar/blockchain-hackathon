@@ -10,8 +10,8 @@ import { Location } from '../src/location.model';
 import { ControllerAdapter } from '@worldsibu/convector-core-adapter';
 
 
-export class CoffeeControllerClient extends ConvectorController {
-  public name = 'coffee';
+export class LocationControllerClient extends ConvectorController {
+  public name = 'location';
 
   constructor(public adapter: ControllerAdapter, public user?: string) {
     super()
@@ -26,7 +26,7 @@ export class CoffeeControllerClient extends ConvectorController {
     
     latitude: string,
     
-    longitude: string,
+    longitude: string
   ) {
 
           return await this.adapter.invoke(this.name, 'create', this.user, id, name, latitude, longitude);
@@ -40,7 +40,7 @@ export class CoffeeControllerClient extends ConvectorController {
     
     latitude: string,
     
-    longitude: string,
+    longitude: string
   ) {
 
           return await this.adapter.invoke(this.name, 'updateLocation', this.user, id, latitude, longitude);
