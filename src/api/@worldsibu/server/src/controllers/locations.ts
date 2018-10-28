@@ -20,11 +20,12 @@ export class LocationsController extends Controller {
     const router = Router();
     router.get('/', this.routerMethod(this.list));
     router.post('/', this.routerMethod(this.create));
+    router.get('/:id', this.routerMethod(this.get));
     return router;
   }
 
   public async create(req: Request, res: Response) {
-    const fabricAdapter = this.fabricBuilder.build(this.getUserId());
+    const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
     await fabricAdapter.init();
     const locationClient = new LocationControllerClient(fabricAdapter);
     await locationClient.create(uuid(),
@@ -33,6 +34,11 @@ export class LocationsController extends Controller {
         req.body.longitude,
     );
     res.sendStatus(201);
+  }
+
+  private async get(req: Request, res: Response) {
+    const location = await this.store.get(req.params.id);
+    res.status(200).send(location);
   }
 
   private async list(_req: Request, res: Response) {
