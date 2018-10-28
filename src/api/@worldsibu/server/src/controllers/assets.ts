@@ -74,10 +74,10 @@ export class AssetsController extends Controller {
     const fabricAdapter = this.fabricBuilder.build(Controller.getUserId(req));
     await fabricAdapter.init();
     const locationClient = new CoffeeControllerClient(fabricAdapter);
-    await locationClient.getHistory(
+    const result = await locationClient.getHistory(
       req.params.id
     );
-    res.sendStatus(201);
+    res.status(200).send(result);
   }
 
   public async split(req: Request, res: Response) {
