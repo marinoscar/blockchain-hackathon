@@ -11,12 +11,12 @@ import {CouchDbStore, UserStore} from './store';
 import {FabricAdapterBuilder} from './utils/adapter-builder';
 import {LocationsController} from './controllers/locations';
 
+const rootDir = path.resolve(__dirname, '..');
+dotenv.config();
+
 const channel = process.env.CHANNEL;
 const userChainCode = 'participant';
 const locationChainCode = 'coffee';
-
-const rootDir = path.resolve(__dirname, '..');
-dotenv.config();
 
 // Users
 const users = new Map([
