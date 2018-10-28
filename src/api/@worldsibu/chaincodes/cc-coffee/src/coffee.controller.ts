@@ -97,8 +97,8 @@ export class CoffeeController extends ConvectorController {
   public async join(
     @Param(yup.string())
     id: string,
-    @Param(yup.array(yup.object()))
-    components: Array<Coffee>,
+    @Param(yup.array(yup.string()))
+    componentIds: Array<string>,
     @Param(yup.number())
     modifiedDate: number
   ) {
@@ -107,7 +107,8 @@ export class CoffeeController extends ConvectorController {
       throw new Error('The current owner is the only user capable of join the coffee.');
     }
     let value = 0;
-    components.map(component => {
+    componentIds.map(async (componentId) => {
+      const component = await Coffee.getOne(componentId);
       if (component.owner !== this.sender) {
         throw new Error('The current owner is the only user capable of join components.');
       }
@@ -117,6 +118,8 @@ export class CoffeeController extends ConvectorController {
         coffee.components = [component];
       }
       value = value + component.value;
+      // remove current joined component
+      await component.delete();
     })
     coffee.value = value;
     coffee.modifiedBy = this.sender;
@@ -140,24 +143,23 @@ export class CoffeeController extends ConvectorController {
     }
     let value = 0;
     splitIds.map(async (splitId) => {
-      const component = await Coffee.getOne(splitId);
-      if (component.owner !== this.sender) {
+      const split = await Coffee.getOne(splitId);
+      if (split.owner !== this.sender) {
         throw new Error('The current owner is the only user capable of split into splits.');
       }
-      if (coffee.components) {
-        coffee.components.push(component);
+      if (split.components) {
+        split.components.push(coffee);
       } else {
-        coffee.components = [component];
+        split.components = [coffee];
       }
-      value = value + component.value;
+      await split.save();
+      value = value + split.value;
     })
     if (coffee.value !== value) {
       throw new Error('The splits value sum should be the same as parents value');
     }
-    coffee.modifiedBy = this.sender;
-    coffee.modifiedDate = modifiedDate;
-
-    await coffee.save();
+    // remove original splitted coffee
+    await coffee.delete();
   }
 
   @Invokable()

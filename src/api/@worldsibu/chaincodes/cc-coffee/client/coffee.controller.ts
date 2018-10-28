@@ -74,7 +74,7 @@ export class CoffeeControllerClient extends ConvectorController {
     
     id: string,
     
-    components: Array<Coffee>,
+    components: Array<string>,
     
     modifiedDate: number
   ) {
