@@ -94,4 +94,13 @@ export class CoffeeControllerClient extends ConvectorController {
           return await this.adapter.invoke(this.name, 'split', this.user, id, splitIds, modifiedDate);
         
   }
+
+  public async getHistory(
+    
+    id: string
+  ) {
+
+          return await this.adapter.invoke(this.name, 'getHistory', this.user, id);
+        
+  }
 }

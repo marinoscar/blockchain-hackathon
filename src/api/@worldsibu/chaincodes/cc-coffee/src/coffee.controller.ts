@@ -159,4 +159,13 @@ export class CoffeeController extends ConvectorController {
 
     await coffee.save();
   }
+
+  @Invokable()
+  public async getHistory(
+    @Param(yup.string())
+    id: string
+  ) {
+    const coffee = await Coffee.getOne(id);
+    return await coffee.history();
+  }
 }
