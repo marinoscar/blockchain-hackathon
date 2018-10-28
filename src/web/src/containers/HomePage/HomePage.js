@@ -10,7 +10,7 @@ class HomePage extends React.Component {
         <div className="bg-dark">
           <div className="h-100-vh">
             <div className="container h-100">
-              <a href="/beneficio/cafe-recibido">Beneficio</a>
+              <a href="/beneficio/dashboard">Beneficio</a>
             </div>
           </div>
         </div>

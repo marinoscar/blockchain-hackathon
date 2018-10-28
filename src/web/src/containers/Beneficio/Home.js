@@ -9,6 +9,7 @@ import 'react-loading-bar/dist/index.css';
 import { Menu } from './Menu';
 import { AssetList } from './AssetList';
 import { store } from '../../helpers';
+import Dashboard from './Dashboard';
 
 class Home extends React.Component {
   render() {
@@ -28,6 +29,11 @@ class Home extends React.Component {
             </Col>
             <Col md="10" className="page-wrapper">
               <Switch>
+                <Route path="/beneficio/dashboard" component={Dashboard} />
+                <Route
+                  path="/beneficio/cafe-clasificado"
+                  component={AssetList}
+                />
                 <Route path="/beneficio/cafe-recibido" component={AssetList} />
               </Switch>
             </Col>
