@@ -1,34 +1,28 @@
 import * as x509 from 'x509';
-import { join } from 'path';
 import * as fs from 'fs';
 
 export namespace Users {
-  export function GetUsers(list: { org: string, user: string, name: string }[]): {
+
+  export type User = {
     org: string,
     user: string,
     id: string,
     ref: string,
     name: string
-  }[] {
-    let res: {
-      org: string,
-      user: string,
-      id: string,
-      ref: string,
-      name: string
-    }[] = [];
-    for (let item of list) {
-      let cert =
-        JSON.parse(
-          fs.readFileSync(`../../.convector-dev-env/.hfc-${item.org}/${item.user}`
-            , 'utf8')).enrollment.identity.certificate;
-      let certParsed = x509.parseCert(cert);
+  };
 
-      res.push({
-        org: item.org, user: item.user, id: certParsed.fingerPrint,
-        ref: `${item.org}:${item.user}`, name: item.name
-      });
-    }
-    return res;
+  export function GetUsers(list: { org: string, user: string, name: string }[]): User[] {
+    return list.map((item) => {
+      const certPath = `../../.convector-dev-env/.hfc-${item.org}/${item.user}`;
+      const cert = JSON.parse(fs.readFileSync(certPath, 'utf8')).enrollment;
+      const certParsed = x509.parseCert(cert.identity.certificate);
+      return {
+        org: item.org,
+        user: item.user,
+        id: certParsed.fingerPrint,
+        ref: `${item.org}:${item.user}`,
+        name: item.name,
+      };
+    });
   }
 }

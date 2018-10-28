@@ -10,13 +10,11 @@
  * Implementation will depend on this layer. In this case, what we want to do at this layer
  * is to call the backend peers.
  */
-import { resolve } from 'path';
-import { FabricControllerAdapter } from '@worldsibu/convector-adapter-fabric';
-import { DrugControllerClient } from '@worldsibu/convector-example-dsc-cc-drug/dist/client';
-import { ParticipantControllerClient, Participant } from '@worldsibu/convector-example-dsc-cc-participant/dist/client';
-
-import { Models } from './models';
-import { SelfGenContext } from '../selfGenContext';
+import {resolve} from 'path';
+import {FabricControllerAdapter} from '@worldsibu/convector-adapter-fabric';
+import {DrugControllerClient} from '@worldsibu/convector-example-dsc-cc-drug/dist/client';
+import {ParticipantControllerClient} from '@worldsibu/convector-example-dsc-cc-participant/dist/client';
+import {SelfGenContext} from '../selfGenContext';
 
 /**
  * Building this adapter allows you to communicate with the
@@ -36,7 +34,7 @@ export namespace DrugController {
       chaincode: process.env.CHAINCODE,
       keyStore: resolve(__dirname, process.env.KEYSTORE),
       networkProfile: resolve(__dirname, process.env.NETWORKPROFILE),
-      userMspPath: process.env.KEYSTORE
+      userMspPath: process.env.KEYSTORE,
     });
 
     await adapter.init();
@@ -46,13 +44,9 @@ export namespace DrugController {
 
 export namespace ParticipantController {
 
-
   export async function init(): Promise<ParticipantControllerClient> {
     const user = process.env.USERCERT || 'user1';
-    const organization = process.env.ORGCERT || 'org1';
-
     await SelfGenContext.getClient();
-
     const adapter = new FabricControllerAdapter({
       user,
       txTimeout: 300000,
@@ -61,22 +55,11 @@ export namespace ParticipantController {
       chaincode: process.env.CHAINCODE,
       keyStore: resolve(__dirname, process.env.KEYSTORE),
       networkProfile: resolve(__dirname, process.env.NETWORKPROFILE),
-      userMspPath: process.env.KEYSTORE
+      userMspPath: process.env.KEYSTORE,
     });
 
     await adapter.init();
 
-    const participantCtrl = new ParticipantControllerClient(adapter);
-
-    const users = await Models.getAllParticipants();
-    if (!users.find(u => u.user === user && u.organization === organization)) {
-      await participantCtrl.register(new Participant({
-        user,
-        organization,
-        created: Date.now()
-      }))
-    }
-
-    return participantCtrl;
+    return new ParticipantControllerClient(adapter);
   }
 }

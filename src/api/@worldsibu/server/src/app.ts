@@ -1,21 +1,29 @@
 // @ts-check
 
+import * as path from 'path';
+import * as express from 'express';
+import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
+import * as NodeCouchDb from 'node-couchdb';
+import {initUsers} from './init';
+import {DrugCtrl} from './controllers';
+
 dotenv.config();
 
-import * as express from 'express';
-import { DrugCtrl } from './controllers';
-import * as bodyParser from 'body-parser';
-
 const app: express.Application = express();
-const port = process.env.PORT || 10100;
+
+const couchDb = new NodeCouchDb({
+  host: process.env.COUCHDB_HOST,
+  protocol:  process.env.COUCHDB_PROTOCOL,
+  port: parseInt(process.env.COUCHDB_PORT),
+});
 
 app.use(bodyParser.urlencoded({
   extended: true,
-  limit: '40mb'
+  limit: '40mb',
 }));
 
-app.use(bodyParser.json({ limit: '40mb' }));
+app.use(bodyParser.json({limit: '40mb'}));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -26,22 +34,28 @@ app.use((req, res, next) => {
 
 app.use('/drug', DrugCtrl);
 
-const user = process.env.USERCERT;
-const org = process.env.ORGCERT;
+// Create users and start listener
 
-console.log(`PORT=${process.env.PORT}`);
-console.log(`USERCERT=${process.env.USERCERT}`);
-console.log(`ORGCERT=${process.env.ORGCERT}`);
-console.log(`KEYSTORE=${process.env.KEYSTORE}`);
-console.log(`NETWORKPROFILE=${process.env.NETWORKPROFILE}`);
-console.log(`CHANNEL=${process.env.CHANNEL}`);
-console.log(`CHAINCODE=${process.env.CHAINCODE}`);
-console.log(`COUCHDBVIEW=${process.env.COUCHDBVIEW}`);
-console.log(`COUCHDB_PROTOCOL=${process.env.COUCHDB_PROTOCOL}`);
-console.log(`COUCHDB_HOST=${process.env.COUCHDB_HOST}`);
-console.log(`COUCHDB_PORT=${process.env.COUCHDB_PORT}`);
+const users = new Map([
+  ['user1-id', 'user1'],
+  ['user2-id', 'user2'],
+  ['user3-id', 'user3'],
+]);
 
-app.listen(port, () =>
-  console.log(`Running as ${org}:${user} in port ${port}`));
+const rootDir = path.resolve(__dirname, '..');
 
-module.exports = app;
+initUsers(
+    Array.from(users.values()),
+    process.env.ORGCERT,
+    path.resolve(rootDir, process.env.KEYSTORE),
+    path.resolve(rootDir, process.env.NETWORKPROFILE),
+    process.env.CHANNEL,
+    process.env.CHAINCODE,
+).then(() => {
+  const port = process.env.PORT || 10100;
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}...`);
+  });
+}).catch(err => {
+  console.error(err);
+});

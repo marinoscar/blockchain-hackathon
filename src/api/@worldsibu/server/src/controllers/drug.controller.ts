@@ -1,12 +1,9 @@
 import * as crypto from 'crypto';
-import { Router, Request, Response } from 'express';
+import {Request, Response, Router} from 'express';
 
-import { Helper } from '../utils';
-import { Drug, Models, DrugController, Participant, ParticipantController } from '../utils';
+import {Drug, DrugController, Helper, Models} from '../utils';
 
 const router: Router = Router();
-
-ParticipantController.init();
 
 /** Get all the users */
 router.get('/users', async (req: Request, res: Response) => {
@@ -28,10 +25,11 @@ router.get('/', async (req: Request, res: Response) => {
   const dbName = `${channel}_${cc}`;
   const viewUrl = '_design/drugs/_view/all';
 
-  const queryOptions = { startKey: [''], endKey: [''] };
+  const queryOptions = {startKey: [''], endKey: ['']};
 
   try {
-    const result = <Drug[]>(await Models.Drug.query(Models.Drug, dbName, viewUrl, queryOptions));
+    const result = <Drug[]>(await Models.Drug.query(Models.Drug, dbName,
+        viewUrl, queryOptions));
 
     res.send(await Promise.all(result.map(Models.formatDrug)));
   } catch (err) {
@@ -44,7 +42,6 @@ router.get('/', async (req: Request, res: Response) => {
   }
 
 });
-
 
 // router.get('/users', (req: Request, res: Response) => {
 //   const list = [
@@ -60,8 +57,8 @@ router.get('/', async (req: Request, res: Response) => {
 
 /** Transfer the holder of the drug in the value chain. */
 router.post('/:id/transfer/', async (req: Request, res: Response) => {
-  let { id } = req.params;
-  let { to, reportHash, reportUrl } = req.body;
+  let {id} = req.params;
+  let {to, reportHash, reportUrl} = req.body;
 
   try {
     let cntrl = await DrugController.init();
@@ -79,7 +76,7 @@ router.post('/:id/transfer/', async (req: Request, res: Response) => {
 
 /** Insert one drug. */
 router.post('/', async (req: Request, res: Response) => {
-  let { id, name } = req.body;
+  let {id, name} = req.body;
 
   const fId = id || crypto.randomBytes(16).toString('hex');
 
