@@ -16,7 +16,7 @@ const app: express.Application = express();
 
 const couchDb = new NodeCouchDb({
   host: process.env.COUCHDB_HOST,
-  protocol:  process.env.COUCHDB_PROTOCOL,
+  protocol: process.env.COUCHDB_PROTOCOL,
   port: parseInt(process.env.COUCHDB_PORT),
 });
 
@@ -35,17 +35,15 @@ app.use('/other', usersController.Router());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
 
 app.use('/drug', DrugCtrl);
 
-// data{}.docs[]
-
 // Create users and start listener
-
 const users = new Map([
   ['user1-id', 'user1'],
   ['user2-id', 'user2'],

@@ -2,10 +2,9 @@
 
 import {FabricControllerAdapter} from '@worldsibu/convector-adapter-fabric';
 import {
-  ParticipantControllerClient,
   Participant,
+  ParticipantControllerClient,
 } from '@worldsibu/convector-example-dsc-cc-participant/dist/client';
-import {Models} from './utils';
 import {UserStore} from './store/user';
 
 const fabricTimeout = 300000;
